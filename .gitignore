@@ -31,8 +31,15 @@ venv/
 env/
 .env/
 
+# Engine frontend (separate repo)
+engine-hoshloop/
+
 # Node (if any)
 node_modules/
+
+# Environment
+.env
+api/.env
 
 # Logs
 *.log

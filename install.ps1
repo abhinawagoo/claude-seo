@@ -29,7 +29,7 @@ try {
 # Set paths
 $SkillDir = "$env:USERPROFILE\.claude\skills\seo"
 $AgentDir = "$env:USERPROFILE\.claude\agents"
-$RepoUrl = "https://github.com/AgriciDaniel/claude-seo"
+$RepoUrl = "https://github.com/abhinawagoo/claude-seo"
 
 # Create directories
 New-Item -ItemType Directory -Force -Path $SkillDir | Out-Null

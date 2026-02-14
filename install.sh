@@ -7,7 +7,7 @@ set -euo pipefail
 main() {
     SKILL_DIR="${HOME}/.claude/skills/seo"
     AGENT_DIR="${HOME}/.claude/agents"
-    REPO_URL="https://github.com/AgriciDaniel/claude-seo"
+    REPO_URL="https://github.com/abhinawagoo/claude-seo"
 
     echo "════════════════════════════════════════"
     echo "║   Claude SEO - Installer             ║"

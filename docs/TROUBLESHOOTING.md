@@ -26,7 +26,7 @@ claude
 
 4. Re-run installer:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/abhinawagoo/claude-seo/main/install.sh | bash
 ```
 
 ---
