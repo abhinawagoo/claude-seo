@@ -1,11 +1,18 @@
 # Claude SEO - Python Dependencies
-# Bounded version pinning with security-conscious minimums
-# Last updated: February 7, 2026
+# Last updated: February 15, 2026
 
-beautifulsoup4>=4.12.0,<5.0.0     # No known CVEs
-requests>=2.32.4,<3.0.0           # CVE-2024-47081, CVE-2024-35195 fixes
-lxml>=6.0.2,<7.0.0                # CVE-2025-24928 + additional libxml2 security patches
-playwright>=1.56.0,<2.0.0         # CVE-2025-59288 fix (macOS)
-Pillow>=12.1.0,<13.0.0            # CVE-2025-48379 fix
-urllib3>=2.6.3,<3.0.0             # CRITICAL: CVE-2026-21441 (CVSS 8.9), CVE-2025-66418
-validators>=0.22.0,<1.0.0         # No known CVEs
+# Core
+beautifulsoup4>=4.12.0,<5.0.0
+requests>=2.32.4,<3.0.0
+lxml>=6.0.2,<7.0.0
+Pillow>=12.1.0,<13.0.0
+urllib3>=2.6.3,<3.0.0
+validators>=0.22.0,<1.0.0
+
+# API backend (FastAPI)
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+httpx>=0.28.0
+anthropic>=0.42.0
+pydantic>=2.10.0
+python-dotenv>=1.0.0
