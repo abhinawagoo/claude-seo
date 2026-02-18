@@ -50,13 +50,13 @@ claude-seo/
 │   ├── Dockerfile          # For Railway/Render deployment
 │   ├── requirements.txt    # fastapi, uvicorn, anthropic, httpx, bs4, lxml
 │   └── analyzers/
-│       ├── technical.py    # 25% weight — title, meta, HTTPS, headers, robots, sitemap
-│       ├── content.py      # 25% weight — word count, readability, Claude E-E-A-T
-│       ├── onpage.py       # 20% weight — H1, headings, links, OG, URL structure
+│       ├── technical.py    # 20% weight — title, meta, HTTPS, headers, robots, sitemap
+│       ├── content.py      # 20% weight — word count, readability, Claude E-E-A-T
+│       ├── onpage.py       # 15% weight — H1, headings, links, OG, URL structure
+│       ├── geo.py          # 20% weight — AI search visibility, citability, crawlers
 │       ├── schema_analyzer.py # 10% weight — JSON-LD validation, deprecated types
 │       ├── performance.py  # 10% weight — scripts, CLS, image formats, CDN
-│       ├── images.py       # 5% weight — alt text, lazy loading, modern formats
-│       └── ai_readiness.py # 5% weight — llms.txt, AI crawlers, citable passages
+│       └── images.py       # 5% weight — alt text, lazy loading, modern formats
 ├── schema/templates.json   # JSON-LD schema snippets
 ├── hooks/                  # Git pre-commit validation
 ├── docs/                   # ARCHITECTURE.md, COMMANDS.md, INSTALLATION.md, etc.
@@ -71,13 +71,13 @@ claude-seo/
 ### Category Weights
 | Category | Weight | Key Checks |
 |----------|--------|------------|
-| Technical SEO | 25% | Title, meta desc, canonical, HTTPS, security headers, robots.txt, sitemap |
-| Content Quality | 25% | Word count, readability (Flesch), Claude AI E-E-A-T analysis |
-| On-Page SEO | 20% | H1, heading hierarchy, internal links, OG tags, URL structure |
+| Technical SEO | 20% | Title, meta desc, canonical, HTTPS, security headers, robots.txt, sitemap |
+| Content Quality | 20% | Word count, readability (Flesch), Claude AI E-E-A-T analysis |
+| On-Page SEO | 15% | H1, heading hierarchy, internal links, OG tags, URL structure |
+| AI Search (GEO) | 20% | Citability, structural readability, multi-modal, authority, AI crawlers |
 | Schema | 10% | JSON-LD presence, deprecated types, required properties |
 | Performance | 10% | Render-blocking scripts, image formats, CLS, CDN |
 | Images | 5% | Alt text, dimensions, lazy loading, modern formats |
-| AI Readiness | 5% | llms.txt, AI crawler access, citable passages, question headings |
 
 ### E-E-A-T Weights (Content analyzer)
 - Experience: 20%, Expertise: 25%, Authoritativeness: 25%, Trustworthiness: 30%

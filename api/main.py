@@ -38,6 +38,7 @@ app = FastAPI(
 
 class AuditRequest(BaseModel):
     url: HttpUrl
+    competitor_url: HttpUrl | None = None
 
 
 class AuditResponse(BaseModel):
@@ -77,8 +78,10 @@ async def audit(req: AuditRequest, x_api_key: str = Header(default="")):
     )):
         raise HTTPException(status_code=400, detail="Private/local URLs not allowed")
 
+    competitor = str(req.competitor_url) if req.competitor_url else None
+
     try:
-        results = await run_audit(url)
+        results = await run_audit(url, competitor_url=competitor)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Audit failed: {str(e)}")
 

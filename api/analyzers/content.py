@@ -1,4 +1,4 @@
-"""Content Quality analyzer with Claude AI E-E-A-T — 25% weight."""
+"""Content Quality analyzer with Claude AI E-E-A-T — 20% weight."""
 
 import json
 import re
@@ -188,7 +188,7 @@ async def analyze(parsed: dict, fetch_result: dict) -> dict:
         "name": "content",
         "label": "Content Quality",
         "score": max(0, score),
-        "weight": 0.25,
+        "weight": 0.20,
         "issues": issues,
         "summary": f"Content quality score: {max(0, score)}/100. Word count: {word_count}.",
         "eeat": eeat_data,

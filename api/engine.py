@@ -7,15 +7,16 @@ import time
 from .fetcher import fetch_page
 from .parser import parse_html
 from .scorer import build_results
-from .analyzers import technical, content, onpage, schema_analyzer, performance, images, ai_readiness
+from .analyzers import technical, content, onpage, schema_analyzer, performance, images, geo
 
 
-async def run_audit(url: str, on_progress=None) -> dict:
+async def run_audit(url: str, competitor_url: str | None = None, on_progress=None) -> dict:
     """
     Run a full SEO audit on the given URL.
 
     Args:
         url: The URL to audit
+        competitor_url: Optional competitor URL for GEO comparison
         on_progress: Optional callback(step: str, progress: int)
 
     Returns:
@@ -37,6 +38,19 @@ async def run_audit(url: str, on_progress=None) -> dict:
             "categories": [],
             "topFixes": [],
         }
+
+    # Fetch competitor in parallel if provided
+    competitor_fetch = None
+    competitor_parsed = None
+    if competitor_url:
+        competitor_fetch = await fetch_page(competitor_url)
+        if not competitor_fetch.get("error"):
+            competitor_parsed = parse_html(
+                competitor_fetch["html"],
+                base_url=competitor_fetch.get("final_url", competitor_url),
+            )
+        else:
+            competitor_fetch = None
 
     if on_progress:
         await on_progress("Parsing HTML...", 15)
@@ -79,9 +93,9 @@ async def run_audit(url: str, on_progress=None) -> dict:
     images_result = images.analyze(parsed, fetch_result)
 
     if on_progress:
-        await on_progress("Analyzing AI search readiness...", 90)
+        await on_progress("Analyzing AI search visibility...", 90)
 
-    ai_result = ai_readiness.analyze(parsed, fetch_result)
+    geo_result = await geo.analyze(parsed, fetch_result, competitor_parsed, competitor_fetch)
 
     if on_progress:
         await on_progress("Generating report...", 95)
@@ -94,7 +108,7 @@ async def run_audit(url: str, on_progress=None) -> dict:
         schema_result,
         perf_result,
         images_result,
-        ai_result,
+        geo_result,
     ]
 
     duration_ms = int((time.time() - start) * 1000)

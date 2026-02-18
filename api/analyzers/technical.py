@@ -1,4 +1,4 @@
-"""Technical SEO analyzer — 25% weight."""
+"""Technical SEO analyzer — 20% weight."""
 
 
 SECURITY_HEADERS = [
@@ -144,7 +144,7 @@ def analyze(parsed: dict, fetch_result: dict) -> dict:
         "name": "technical",
         "label": "Technical SEO",
         "score": max(0, score),
-        "weight": 0.25,
+        "weight": 0.20,
         "issues": issues,
         "summary": f"Technical SEO score: {max(0, score)}/100 with {len(issues)} issues found.",
     }

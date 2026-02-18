@@ -2,8 +2,8 @@
 Score aggregator — builds final AuditResults from category results.
 
 Weights:
-  technical: 25%, content: 25%, onpage: 20%,
-  schema: 10%, performance: 10%, images: 5%, ai-readiness: 5%
+  technical: 20%, content: 20%, onpage: 15%,
+  geo: 20%, schema: 10%, performance: 10%, images: 5%
 """
 
 from urllib.parse import urlparse

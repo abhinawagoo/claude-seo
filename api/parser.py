@@ -39,6 +39,10 @@ def parse_html(html: str, base_url: Optional[str] = None) -> dict:
         "word_count": 0,
         "body_text": "",
         "hreflang": [],
+        "lists": {"ul": 0, "ol": 0},
+        "tables": 0,
+        "videos": [],
+        "paragraphs": [],
     }
 
     # Language
@@ -155,6 +159,34 @@ def parse_html(html: str, base_url: Optional[str] = None) -> dict:
             result["schema"].append(json.loads(script.string))
         except (json.JSONDecodeError, TypeError):
             pass
+
+    # Lists
+    result["lists"]["ul"] = len(soup.find_all("ul"))
+    result["lists"]["ol"] = len(soup.find_all("ol"))
+
+    # Tables
+    result["tables"] = len(soup.find_all("table"))
+
+    # Videos (native + iframe embeds)
+    for video in soup.find_all("video"):
+        src = video.get("src") or ""
+        source = video.find("source")
+        if not src and source:
+            src = source.get("src", "")
+        if base_url and src:
+            src = urljoin(base_url, src)
+        result["videos"].append({"type": "native", "src": src})
+
+    for iframe in soup.find_all("iframe"):
+        iframe_src = iframe.get("src", "")
+        if any(h in iframe_src for h in ["youtube", "vimeo", "wistia", "dailymotion", "loom"]):
+            result["videos"].append({"type": "iframe", "src": iframe_src})
+
+    # Paragraphs (for citable passage analysis)
+    for p in soup.find_all("p"):
+        text = p.get_text(strip=True)
+        if text:
+            result["paragraphs"].append(text)
 
     # Body text + word count
     text_soup = BeautifulSoup(html, "lxml")

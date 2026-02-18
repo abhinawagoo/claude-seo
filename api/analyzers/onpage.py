@@ -1,4 +1,4 @@
-"""On-Page SEO analyzer — 20% weight."""
+"""On-Page SEO analyzer — 15% weight."""
 
 from urllib.parse import urlparse
 
@@ -109,7 +109,7 @@ def analyze(parsed: dict, fetch_result: dict) -> dict:
         "name": "onpage",
         "label": "On-Page SEO",
         "score": max(0, score),
-        "weight": 0.20,
+        "weight": 0.15,
         "issues": issues,
         "summary": f"On-page score: {max(0, score)}/100.",
     }
