@@ -14,24 +14,30 @@ Usage:
 
 import json
 import os
-from typing import Optional
+from typing import Any, Optional
 
-import asyncpg
-
-_pool: Optional[asyncpg.Pool] = None
+# asyncpg is imported lazily inside get_pool() so the app boots even if the
+# package isn't installed yet (e.g. first Railway deploy before pip finishes).
+_pool: Optional[Any] = None
 
 
 # ---------------------------------------------------------------------------
 # Connection pool
 # ---------------------------------------------------------------------------
 
-async def get_pool() -> asyncpg.Pool:
+async def get_pool():
     global _pool
     if _pool is None:
+        try:
+            import asyncpg as _asyncpg
+        except ModuleNotFoundError:
+            raise RuntimeError(
+                "asyncpg is not installed. Add asyncpg>=0.30.0 to requirements.txt."
+            )
         dsn = os.environ.get("DATABASE_URL")
         if not dsn:
             raise RuntimeError("DATABASE_URL environment variable not set")
-        _pool = await asyncpg.create_pool(dsn, min_size=2, max_size=10)
+        _pool = await _asyncpg.create_pool(dsn, min_size=2, max_size=10)
     return _pool
 
 
