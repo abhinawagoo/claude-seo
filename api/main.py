@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Header, Query
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse  # used in /gsc/callback
 from pydantic import BaseModel, HttpUrl
 
 from .engine import run_audit
@@ -132,9 +132,8 @@ async def gsc_connect(
     x_api_key: str = Header(default=""),
 ):
     """
-    Start the Google Search Console OAuth flow.
-    Redirects the user to Google's consent page.
-    State encodes the domain so we know which company to associate after callback.
+    Returns the Google OAuth consent URL as JSON.
+    The frontend handles the browser redirect.
     """
     if API_SECRET and x_api_key != API_SECRET:
         raise HTTPException(status_code=401, detail="Invalid API key")
@@ -143,11 +142,11 @@ async def gsc_connect(
     if not client.client_id:
         raise HTTPException(status_code=500, detail="GOOGLE_CLIENT_ID not configured")
 
-    url = client.get_authorization_url(
+    auth_url = client.get_authorization_url(
         redirect_uri=_gsc_redirect_uri(),
         state=domain,
     )
-    return RedirectResponse(url)
+    return {"url": auth_url, "domain": domain}
 
 
 @app.get("/gsc/callback")
